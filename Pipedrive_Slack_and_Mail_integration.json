@@ -1,0 +1,288 @@
+{
+  "name": "Pipedrive Slack & Mail integration",
+  "nodes": [
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C06H3EYF412",
+          "mode": "list",
+          "cachedResultName": "general"
+        },
+        "text": "=We have a new customer! 🎉\nGood job, <@{{ $json.current.aba9493a047428aaec07fd07d4f2fb7d181f580a }}>! 👏",
+        "otherOptions": {}
+      },
+      "id": "8fede8cf-5f68-46c7-a3a6-ae19799bf80f",
+      "name": "[S] #general notice",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        380
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "UTmkRRFzGJFfAuox",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "action": "added",
+        "object": "deal"
+      },
+      "id": "3c650dd3-45a1-4172-bd79-9fcbecf6f3c5",
+      "name": "[P] New Deal",
+      "type": "n8n-nodes-base.pipedriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        220
+      ],
+      "webhookId": "3fd6150f-9c14-4fd5-8e35-7342efc93ead",
+      "credentials": {
+        "pipedriveApi": {
+          "id": "pPKsnqkCSpSpTI1m",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "action": "updated",
+        "object": "deal"
+      },
+      "id": "91ed3363-99e8-4e7e-9507-2414318fbc04",
+      "name": "[P] Deal update",
+      "type": "n8n-nodes-base.pipedriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        580,
+        380
+      ],
+      "webhookId": "eb5578ad-ce56-46c1-bf6b-1ce19551ae8c",
+      "credentials": {
+        "pipedriveApi": {
+          "id": "pPKsnqkCSpSpTI1m",
+          "name": "Pipedrive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "=@{{ $json[\"current\"][\"aba9493a047428aaec07fd07d4f2fb7d181f580a\"] }}",
+          "mode": "username"
+        },
+        "messageType": "block",
+        "blocksUi": "={\n\t\"blocks\": [\t\t\n{\"type\": \"header\",\n\t\t\"text\": {\n\t\t\t\"type\": \"plain_text\",\n\t\t\t\"text\": \"New client!\"\n\t\t}},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"*Name*: {{ $json[\"current\"][\"6a6e24e54afdadef2546ee2f0e4138c76b6114f0\"] }} {{ $json.current[\"3e7e0443460e38d05861a378d4aaf61525b45e82\"] }}\\n*Email*: {{ $json.current.e3200394778ff68902e308c4c170675cf17e3452 }}\\n*Phone*: {{ $json[\"current\"][\"1c1f664e0c2f1dd67e672952984c1df8e5b3ac9e\"] }}\\n*Deadline*: {{ $json[\"current\"][\"df988f19e7204a746b6f17873549b772dff4d103\"] }}: {{ $json[\"current\"][\"5396cddfceb5c3a992aa94f2cd396667e4376100\"] }} — {{ $json[\"current\"][\"dcbf88fc2e69e6fb70bffc2b9bf9d7c57bca648c\"] }}\"\n\t\t\t}\n\t\t}\n\t]\n}",
+        "text": "=",
+        "otherOptions": {}
+      },
+      "id": "8a682bca-28ee-4c66-98fa-504db7f5ab73",
+      "name": "[S] PM: New order",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        720,
+        220
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "UTmkRRFzGJFfAuox",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "user",
+        "user": {
+          "__rl": true,
+          "value": "=@{{ $json[\"current\"][\"aba9493a047428aaec07fd07d4f2fb7d181f580a\"] }}",
+          "mode": "username"
+        },
+        "messageType": "block",
+        "blocksUi": "={\n\t\"blocks\": [\t\t\n{\"type\": \"header\",\n\t\t\"text\": {\n\t\t\t\"type\": \"plain_text\",\n\t\t\t\"text\": \"New stage: {{ $json[\"current\"][\"stage_id\"] }}\"\n\t\t}},\n\t\t{\n\t\t\t\"type\": \"section\",\n\t\t\t\"text\": {\n\t\t\t\t\"type\": \"mrkdwn\",\n\t\t\t\t\"text\": \"*Name*: {{ $json[\"current\"][\"6a6e24e54afdadef2546ee2f0e4138c76b6114f0\"] }} {{ $json.current[\"3e7e0443460e38d05861a378d4aaf61525b45e82\"] }}\\n*Email*: {{ $json.current.e3200394778ff68902e308c4c170675cf17e3452 }}\\n*Phone*: {{ $json[\"current\"][\"1c1f664e0c2f1dd67e672952984c1df8e5b3ac9e\"] }}\\n*Deadline*: {{ $json[\"current\"][\"df988f19e7204a746b6f17873549b772dff4d103\"] }}: {{ $json[\"current\"][\"5396cddfceb5c3a992aa94f2cd396667e4376100\"] }} — {{ $json[\"current\"][\"dcbf88fc2e69e6fb70bffc2b9bf9d7c57bca648c\"] }}\"\n\t\t\t}\n\t\t}\n\t]\n}",
+        "otherOptions": {}
+      },
+      "id": "62e1ee9b-47e9-42bc-9bd9-90972560dcc1",
+      "name": "[S] PM: Next stage",
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.1,
+      "position": [
+        920,
+        300
+      ],
+      "credentials": {
+        "slackApi": {
+          "id": "UTmkRRFzGJFfAuox",
+          "name": "Slack account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "mibiely@yandex.ru",
+        "toEmail": "={{ $json.current.e3200394778ff68902e308c4c170675cf17e3452 }}",
+        "subject": "=Welcome to YMCA Fitness Studio!",
+        "emailFormat": "text",
+        "text": "=Hi, {{ $json.current[\"6a6e24e54afdadef2546ee2f0e4138c76b6114f0\"] }}! Thank you for subscription!\nDid you enjoy working with us? Leave a review!",
+        "options": {}
+      },
+      "id": "a6655696-201e-4761-8dc4-9d2802e1484d",
+      "name": "[@] Send email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1120,
+        540
+      ],
+      "credentials": {
+        "smtp": {
+          "id": "Zvo9C4MQT2vBWDMI",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "efbc8d38-3b01-4e44-b9ff-fa70347fe7c9",
+              "leftValue": "={{ $json.current.stage_id }}",
+              "rightValue": "={{ $json.previous.stage_id }}",
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "e7f43faa-fb45-4619-95db-2315383837cf",
+      "name": "If stage update",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "195b96ee-f326-42da-991c-0bb9b825e244",
+              "leftValue": "={{ $json.current.status }}",
+              "rightValue": "won",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "d59b200c-e3e4-4576-9fe0-ca7a745ab62a",
+      "name": "If won",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        920,
+        480
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "[P] New Deal": {
+      "main": [
+        [
+          {
+            "node": "[S] PM: New order",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "[P] Deal update": {
+      "main": [
+        [
+          {
+            "node": "If stage update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If stage update": {
+      "main": [
+        [
+          {
+            "node": "[S] PM: Next stage",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "If won",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If won": {
+      "main": [
+        [
+          {
+            "node": "[S] #general notice",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "[@] Send email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "26a27adf-f1a3-4c76-9235-e089a8844ec6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8901cf1df73c3c2d41f6d2f328ec855cfa542c7c2b947c0a4d4aac2e7e447fdf"
+  },
+  "id": "1NrhEwPUijUuUj0z",
+  "tags": []
+}
